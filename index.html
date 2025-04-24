@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Best of the Best Quiz</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #121212;
+      color: #ffffff;
+      margin: 0;
+      padding: 20px;
+    }
+    h1, h2, h3 {
+      text-align: center;
+      color: #f5c518;
+    }
+    .quiz-container {
+      max-width: 700px;
+      margin: auto;
+      background-color: #1e1e1e;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(245, 197, 24, 0.3);
+    }
+    .question {
+      margin-bottom: 25px;
+    }
+    .question p {
+      font-size: 1.1em;
+    }
+    .options label {
+      display: block;
+      background: #2a2a2a;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .options input[type="radio"] {
+      margin-right: 10px;
+    }
+    .options input[type="radio"]:checked + span {
+      font-weight: bold;
+      color: #f5c518;
+    }
+    .options label:hover {
+      background-color: #333333;
+    }
+    button {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      font-size: 1em;
+      background-color: #f5c518;
+      border: none;
+      color: #121212;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    #results {
+      margin-top: 30px;
+      text-align: center;
+    }
+    .correct {
+      color: #00ff7f;
+    }
+    .wrong {
+      color: #ff4c4c;
+    }
+  </style>
+</head>
+<body>
+  <h1>Best of the Best ⚽ Quiz</h1>
+  <audio autoplay loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+  <div class="quiz-container" id="quiz"></div>
+  <button onclick="checkAnswers()">Submit Answers</button>
+  <div id="results"></div>
+
+  <script>
+    const questions = [
+      {
+        q: "Who is the all-time top scorer for Real Madrid?",
+        options: ["Raúl", "Cristiano Ronaldo", "Karim Benzema", "Di Stéfano"],
+        a: "Cristiano Ronaldo"
+      },
+      {
+        q: "How many Champions League goals does Ronaldo have?",
+        options: ["128", "135", "140", "145"],
+        a: "140"
+      },
+      {
+        q: "Which player scored 672 goals for Barcelona?",
+        options: ["Suárez", "Neymar", "Lionel Messi", "Ronaldinho"],
+        a: "Lionel Messi"
+      },
+      {
+        q: "How many assists has Messi made officially?",
+        options: ["250", "383", "320", "410"],
+        a: "383"
+      },
+      {
+        q: "Which player scored in 5 different World Cups?",
+        options: ["Pelé", "Cristiano Ronaldo", "Klose", "Mbappé"],
+        a: "Cristiano Ronaldo"
+      },
+      {
+        q: "Who is the youngest to score in two UCL finals?",
+        options: ["Messi", "Cristiano Ronaldo", "Vinícius Jr", "Mbappé"],
+        a: "Vinícius Jr"
+      },
+      {
+        q: "Who has scored the most goals in UEFA competitions?",
+        options: ["Lewandowski", "Cristiano Ronaldo", "Messi", "Mbappé"],
+        a: "Cristiano Ronaldo"
+      },
+      {
+        q: "Which player played over 740 matches for Bayern Munich?",
+        options: ["Neuer", "Lahm", "Thomas Müller", "Kimmich"],
+        a: "Thomas Müller"
+      },
+      {
+        q: "How many goals did Arda Güler score for Real Madrid as of 2024?",
+        options: ["6", "9", "11", "13"],
+        a: "9"
+      },
+      {
+        q: "Which player finished second in the 2024 Ballon d'Or race?",
+        options: ["Messi", "Rodri", "Vinícius Jr", "Haaland"],
+        a: "Vinícius Jr"
+      }
+    ];
+
+    const quizContainer = document.getElementById('quiz');
+    questions.forEach((item, index) => {
+      let optionsHTML = item.options.map((opt, i) => {
+        return `<label><input type='radio' name='q${index}' value='${opt}'><span>${opt}</span></label>`;
+      }).join('');
+
+      quizContainer.innerHTML += `
+        <div class="question">
+          <p><strong>Q${index + 1}:</strong> ${item.q}</p>
+          <div class="options">${optionsHTML}</div>
+        </div>
+      `;
+    });
+
+    function checkAnswers() {
+      let score = 0;
+      let resultsHTML = "<h2>Results</h2>";
+      questions.forEach((item, index) => {
+        const selected = document.querySelector(`input[name='q${index}']:checked`);
+        const userAnswer = selected ? selected.value : "";
+        if (userAnswer === item.a) {
+          resultsHTML += `<p class='correct'>Q${index + 1}: Correct!</p>`;
+          score++;
+        } else {
+          resultsHTML += `<p class='wrong'>Q${index + 1}: Wrong! Correct answer: ${item.a}</p>`;
+        }
+      });
+      resultsHTML += `<h3>You got ${score} out of ${questions.length} right!</h3>`;
+      document.getElementById('results').innerHTML = resultsHTML;
+    }
+  </script>
+</body>
+</html>
